@@ -12,9 +12,18 @@ Run the following command to install the API:
 At the moment, you can only use the SDK for querying. To explore datasets, checking quotas, and viewing past queries, visit the [subsets.io](https://www.subsets.io) web interface.
 
 ```python
-from subsetsio import query
+import subsets
 
-df = query(sql="YOUR_SQL_QUERY_HERE", api_key="YOUR_API_KEY")
+# Temp API Key. Sign up for a free permanent key.
+client = subsets.client(api_key="YOUR_API_KEY")
+
+user_query = "apple stock price"
+# Search for tables, and rows within the table
+response = client.search_tables(user_query, n=3)
+# TODO: implement LLM function to convert text to sql
+sql_query = text2sql(user_query, response.tables)
+# Execute the query
+df = client.query(sql_query)
 ```
 
 ## License

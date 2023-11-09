@@ -1,31 +1,23 @@
 import requests
-import pandas as pd
-import time
 
-class SubsetsError(Exception):
-    pass
+class Client:
+    def __init__(self, api_key, base_url='https://server.subsets.io'):
+        self.api_key = api_key
+        self.base_url = base_url
 
-BASE_URL = 'https://server.subsets.io'
+    def search_tables(self, query, n=3):
+        response = requests.get(
+            f"{self.base_url}/deep_search",
+            params={'query': query, 'n': n, 'api_key': self.api_key}
+        )
+        response.raise_for_status()
+        return response.json()
 
-def query(sql, api_key):
-    if not sql or sql.strip() == '':
-        raise SubsetsError("Query cannot be empty.")
-    
-    headers = {
-        'Content-Type': 'application/json',
-        'x-api-key': api_key 
-    }
-
-    response = requests.post(f'{BASE_URL}/engine/submit', 
-                             headers=headers,
-                             json={'query': sql})
-
-    if response.status_code != 200:
-        raise SubsetsError(response.text)
-    
-    signed_url = response.text
-    
-    # load parquet file
-    df = pd.read_parquet(signed_url)
-
-    return df
+    def query(self, sql_query):
+        data = {'query': sql_query, 'api_key': self.api_key}
+        response = requests.post(
+            f"{self.base_url}/execute",
+            json=data
+        )
+        response.raise_for_status()
+        return response.json()

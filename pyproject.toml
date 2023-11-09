@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "subsetsio"
-version = "0.4.1"
+version = "0.5"
 description = ""
 authors = ["Nathan Snellaert <nathan@subsets.io>"]
 readme = "README.md"
