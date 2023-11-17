@@ -1,7 +1,7 @@
 import requests
 
 class Client:
-    def __init__(self, api_key, base_url='https://server.subsets.io'):
+    def __init__(self, api_key, base_url='https://server-2cmmob2q7a-ez.a.run.app'):
         self.api_key = api_key
         self.base_url = base_url
 
